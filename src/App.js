@@ -10,7 +10,8 @@ const App = () => {
     <Routes>
       <Route path="/" element={<Navigation />}>
         <Route index element={<Home />} />
-        <Route path="shop" element={<Shop />} />
+        {/* shop 내부에 nested router 를 만들기 위해 path 에 "/*"" 를 붙입 */}
+        <Route path="shop/*" element={<Shop />} />
         <Route path="auth" element={<Authentication />} />
         <Route path="checkout" element={<Checkout />} />
       </Route>

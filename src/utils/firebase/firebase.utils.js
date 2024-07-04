@@ -19,7 +19,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 
-import { firebaseConfig } from "./firebase.config";
+import { firebaseConfig } from "../../firebase.config";
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);

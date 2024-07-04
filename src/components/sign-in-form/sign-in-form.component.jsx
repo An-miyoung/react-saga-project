@@ -4,10 +4,10 @@ import {
   signInAuthUserWithEmailAndPassword,
 } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input.component";
-import Button from "../button/button.component";
+import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 
 import "./sign-in-form.styles.scss";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const defaultFormFields = {
   email: "",
@@ -15,6 +15,7 @@ const defaultFormFields = {
 };
 
 const SignInForm = () => {
+  const navigate = useNavigate();
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
@@ -36,7 +37,7 @@ const SignInForm = () => {
     try {
       await signInAuthUserWithEmailAndPassword(email, password);
       resetFormFields();
-      redirect("/shop");
+      navigate("/");
     } catch (error) {
       switch (error.code) {
         case "auth/wrong-password": {
@@ -78,7 +79,11 @@ const SignInForm = () => {
 
         <div className="buttons-container">
           <Button type="submit">로그인</Button>
-          <Button type="button" buttonType="google" onClick={signInWithGoogle}>
+          <Button
+            type="button"
+            buttonType={BUTTON_TYPE_CLASSES.google}
+            onClick={signInWithGoogle}
+          >
             Google 로그인
           </Button>
         </div>

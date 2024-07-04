@@ -8,6 +8,7 @@ import FormInput from "../form-input/form-input.component";
 import "./sign-up-form.styles.scss";
 import Button from "../button/button.component";
 import { UserContext } from "../../contexts/user.context";
+import { useNavigate } from "react-router-dom";
 
 const defaultFormFields = {
   displayName: "",
@@ -17,6 +18,7 @@ const defaultFormFields = {
 };
 
 const SignUpForm = () => {
+  const navigate = useNavigate();
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
 
@@ -48,6 +50,7 @@ const SignUpForm = () => {
       // db에 등록
       await createUserDocumentFromAuth(user, { displayName });
       resetFormFields();
+      navigate("/");
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         alert("회원가입 실패 : 이미 회원가입된 이메일");

@@ -1,19 +1,34 @@
 import React from "react";
-import "./directory-item.styles.scss";
+import {
+  BackgrounImage,
+  Body,
+  DirectoryItemContainer,
+} from "./directory-item.styles";
+import { useNavigate } from "react-router-dom";
 
 const DirectoryItem = ({ category }) => {
-  const { title, imageUrl } = category;
+  const navigate = useNavigate();
+  const { title, imageUrl, route } = category;
+
+  const onNavigateHandler = () => {
+    navigate(route);
+  };
+
   return (
-    <div className="directory-container">
-      <div
-        className="background-image"
-        style={{ backgroundImage: `url(${imageUrl})` }}
-      />
-      <div className="directory-body-container">
+    <DirectoryItemContainer onClick={onNavigateHandler}>
+      <BackgrounImage imageurl={imageUrl} />
+      <Body>
         <h2>{title}</h2>
-        <p>Shop Now</p>
-      </div>
-    </div>
+        <p>쇼핑하기</p>
+      </Body>
+    </DirectoryItemContainer>
   );
 };
 export default DirectoryItem;
+
+// {/* <div
+//   className="background-image"
+//   style={{ backgroundImage: `url(${imageUrl})` }}
+// />
+//  이 코드를 styled component 로 변환
+//  background-image: ${({ imageUrl }) => `url(${imageUrl})`}; */}

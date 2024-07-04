@@ -18,7 +18,6 @@ import {
   query,
   getDocs,
 } from "firebase/firestore";
-
 import { firebaseConfig } from "./firebase.config";
 
 // Initialize Firebase

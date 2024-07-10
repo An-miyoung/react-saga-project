@@ -1,13 +1,14 @@
-import React, { useContext, useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useParams } from "react-router-dom";
-import { CategoriesContext } from "../../contexts/categories.context";
+import { useSelector } from "react-redux";
+import { selectCategoriesMap } from "../../store/categories/category.selector";
 import ProductCard from "../../components/product-card/product-card.component";
 
 import "./category.styles.scss";
 
 const Category = () => {
   const { category } = useParams();
-  const { categoriesMap } = useContext(CategoriesContext);
+  const categoriesMap = useSelector(selectCategoriesMap);
 
   // 아래 코드를 사용하면 매번 rerender 가 일어난다.
   // const products = categoriesMap[category]

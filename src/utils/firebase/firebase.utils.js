@@ -72,16 +72,7 @@ export const getCategoriesAndDocuments = async () => {
   const q = query(collectionRef);
 
   const querySanpshot = await getDocs(q);
-  const categoryMap = querySanpshot.docs.reduce((acc, docSnapshot) => {
-    const { title, items } = docSnapshot.data();
-    acc[title.toLowerCase()] = items;
-    return acc;
-  }, {});
-  // docSnapshot.data() 는 { hats: { title: "hats", items: [{},{}...],
-  //                        jackets: {title:"jackets", items:[{},{}]}}} 형태
-
-  // 결과는 {hat: [{},{}....], jacket: [{},{}....]} 와 같은 형태로 변환
-  return categoryMap;
+  return querySanpshot.docs.map((docSnapshot) => docSnapshot.data());
 };
 
 export const createUserDocumentFromAuth = async (

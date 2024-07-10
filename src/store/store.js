@@ -3,10 +3,24 @@ import {
   legacy_createStore as creteStore,
   applyMiddleware,
 } from "redux";
-import logger from "redux-logger";
+// import logger from "redux-logger";
 import { rootReducer } from "./root-reducer";
 
-const middlewares = [logger];
+// currying function 은 변수와 또다른 함수를 전달하는 함수
+const loggerMiddleware = (store) => (next) => (action) => {
+  if (!action.type) {
+    return next(action);
+  }
+
+  console.log("type : ", action.type);
+  console.log("payload : ", action.payload);
+  console.log("current State : ", store.getState());
+
+  next(action);
+  console.log("next State : ", store.getState());
+};
+
+const middlewares = [loggerMiddleware];
 
 const composedEnhancer = compose(applyMiddleware(...middlewares));
 

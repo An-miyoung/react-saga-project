@@ -6,20 +6,7 @@ import {
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { rootReducer } from "./root-reducer";
-
-// currying function 은 변수와 또다른 함수를 전달하는 함수를 이용해 customizing logger구현
-const loggerMiddleware = (store) => (next) => (action) => {
-  if (!action.type) {
-    return next(action);
-  }
-
-  console.log("type : ", action.type);
-  console.log("payload : ", action.payload);
-  console.log("current State : ", store.getState());
-
-  next(action);
-  console.log("next State : ", store.getState());
-};
+import logger from "redux-logger";
 
 const persistConfig = {
   key: "root",
@@ -29,9 +16,17 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const middlewares = [loggerMiddleware];
+// .filter(Boolean) 값이 true 이면 [logger]를 반환, false 이면 [] 반환
+const middlewares = [process.env.NODE_ENV !== "production" && logger].filter(
+  Boolean
+);
 
-const composedEnhancer = compose(applyMiddleware(...middlewares));
+const composeEnhancer =
+  (process.env.NODE_ENV !== "production" &&
+    window &&
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+  compose;
+const composedEnhancer = composeEnhancer(applyMiddleware(...middlewares));
 
 export const store = creteStore(persistedReducer, undefined, composedEnhancer);
 

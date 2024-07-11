@@ -1,14 +1,19 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectCategoriesMap } from "../../store/categories/category.selector";
+import {
+  selectCategoriesIsLoading,
+  selectCategoriesMap,
+} from "../../store/categories/category.selector";
 import ProductCard from "../../components/product-card/product-card.component";
 
 import "./category.styles.scss";
+import Spinner from "../../components/spinner/spinner.components";
 
 const Category = () => {
   const { category } = useParams();
   const categoriesMap = useSelector(selectCategoriesMap);
+  const isLoading = useSelector(selectCategoriesIsLoading);
 
   // 아래 코드를 사용하면 매번 rerender 가 일어난다.
   // const products = categoriesMap[category]
@@ -22,12 +27,16 @@ const Category = () => {
   return (
     <Fragment>
       <h1 className="category-title">{category.toUpperCase()}</h1>
-      <div className="category-container">
-        {products &&
-          products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-      </div>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <div className="category-container">
+          {products &&
+            products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+        </div>
+      )}
     </Fragment>
   );
 };

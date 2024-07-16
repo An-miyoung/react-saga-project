@@ -21,7 +21,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// .filter(Boolean) 값이 true 이면 [logger]를 반환, false 이면 [] 반환
+// .filter(Boolean) 값이 true 이면 [logger, sagaMiddleware]를 반환, false 이면 [sagaMiddleware] 반환
 const middlewares = [
   process.env.NODE_ENV !== "production" && logger,
   sagaMiddleware,

@@ -1,15 +1,11 @@
 import React, { useState } from "react";
-import {
-  createAuthUserWithEmailAndPassword,
-  createUserDocumentFromAuth,
-} from "../../utils/firebase/firebase.utils";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import FormInput from "../form-input/form-input.component";
+import Button from "../button/button.component";
+import { signUpStart } from "../../store/user/user.action";
 
 import "./sign-up-form.styles.scss";
-import Button from "../button/button.component";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentUser } from "../../store/user/user.selector";
 
 const defaultFormFields = {
   displayName: "",
@@ -23,8 +19,6 @@ const SignUpForm = () => {
   const navigate = useNavigate();
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
-
-  const setCurrentUser = useSelector(selectCurrentUser);
 
   const resetFormFields = () => setFormFields(defaultFormFields);
 
@@ -42,15 +36,8 @@ const SignUpForm = () => {
     }
     try {
       // authentication
-      const { user } = await createAuthUserWithEmailAndPassword(
-        email,
-        password,
-        displayName
-      );
-      // context 에 등록
-      dispatch(setCurrentUser(user));
-      // db에 등록
-      await createUserDocumentFromAuth(user, { displayName });
+      dispatch(signUpStart(email, password, displayName));
+
       resetFormFields();
       navigate("/");
     } catch (error) {

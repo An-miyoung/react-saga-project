@@ -99,8 +99,12 @@ export const createUserDocumentFromAuth = async (
       console.log("사용자등록 오류", error.message);
     }
   }
+
+  // redux-saga 가 아닌 경우 로직
+  // return userDocRef
+
   // if user data exist
-  return userDocRef;
+  return userSnapshot;
 };
 
 // sign out
@@ -109,3 +113,17 @@ export const signOutUser = async () => await signOut(auth);
 // auth listner
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
+
+// redux-saga 를 이용하기 위한 함수
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe();
+        resolve(userAuth);
+      },
+      reject
+    );
+  });
+};
